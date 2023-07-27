@@ -1,7 +1,7 @@
 import { ConfigService as AppConfigService } from '@nestjs/config'
 import { Injectable } from '@nestjs/common'
 
-import { ENV } from '@common/enums'
+import { ENV } from '@/common/enums'
 
 @Injectable()
 export class ConfigService {
@@ -12,7 +12,7 @@ export class ConfigService {
   }
 
   get port(): number {
-    return this.config.get<number>(ENV.PORT)
+    return this.config.get<number>(ENV.APP_PORT)
   }
 
   get app_name(): string {

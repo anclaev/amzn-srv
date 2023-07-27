@@ -3,6 +3,7 @@ import { Logger } from '@nestjs/common'
 
 import { AppModule } from './app.module'
 
+import { PrismaService } from '@common/prisma/prisma.service'
 import { ConfigService } from '@/config/config.service'
 
 async function bootstrap() {
@@ -11,6 +12,10 @@ async function bootstrap() {
 
   const logger = new Logger(config.app_name)
 
+  const prisma: PrismaService = app.get(PrismaService)
+  await prisma.enableShutdownHooks(app)
+
+  app.setGlobalPrefix('api')
   app.enableCors()
 
   await app
