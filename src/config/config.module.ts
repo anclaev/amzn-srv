@@ -14,6 +14,7 @@ import { ConfigService } from './config.service'
       isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
         PORT: Joi.number().default(4200),
         APP_NAME: Joi.string().default('Nest'),
       }),

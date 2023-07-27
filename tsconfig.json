@@ -14,6 +14,8 @@
     "paths": {
       "@/*": ["src/*" ],
       "@common/*": [ "src/common/*" ],
+      "@decorators/*":["src/common/decorators/*"],
+      "@utils/*": ["src/common/utils/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
