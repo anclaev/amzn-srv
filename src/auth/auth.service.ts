@@ -12,8 +12,9 @@ import { hash, verify } from 'argon2'
 
 import { PrismaService } from '@/prisma/prisma.service'
 
-import { AuthDto } from './dto/auth.dto'
+import { AuthRegisterDto } from './dto/auth-register.dto'
 import { RefreshTokenDto } from './dto/refresh-token.dto'
+import { AuthLoginDto } from '@/auth/dto/auth-login.dto'
 
 import { Tokens, UserCredentials, UserWithTokens } from '@common/types'
 import { ENV } from '@common/enums'
@@ -25,7 +26,7 @@ export class AuthService {
     private readonly jwt: JwtService,
   ) {}
 
-  async register(dto: AuthDto): Promise<UserWithTokens> {
+  async register(dto: AuthRegisterDto): Promise<UserWithTokens> {
     const _dto = { ...dto, email: dto.email.trim() }
 
     const existUser = await this.prisma.user.findUnique({
@@ -54,7 +55,7 @@ export class AuthService {
     }
   }
 
-  async login(dto: AuthDto): Promise<UserWithTokens> {
+  async login(dto: AuthLoginDto): Promise<UserWithTokens> {
     const user: User = await this.validateUser(dto)
     const tokens = await this.issueTokens(user.id)
 
@@ -107,7 +108,7 @@ export class AuthService {
     }
   }
 
-  private async validateUser(dto: AuthDto): Promise<User> {
+  private async validateUser(dto: AuthRegisterDto): Promise<User> {
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
