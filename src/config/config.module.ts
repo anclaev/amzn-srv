@@ -4,20 +4,15 @@ import {
 } from '@nestjs/config'
 
 import { Module } from '@nestjs/common'
-import * as Joi from '@hapi/joi'
+
+import { validationSchema } from '@utils/config-validation-schema'
 
 import { ConfigService } from './config.service'
-
 @Module({
   imports: [
     AppConfigModule.forRoot({
       isGlobal: true,
-      validationSchema: Joi.object({
-        DATABASE_URL: Joi.string().required(),
-        JWT_SECRET: Joi.string().required(),
-        PORT: Joi.number().default(4200),
-        APP_NAME: Joi.string().default('Nest'),
-      }),
+      validationSchema,
     }),
   ],
   providers: [ConfigService, AppConfigService],

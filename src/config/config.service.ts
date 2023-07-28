@@ -7,10 +7,6 @@ import { ENV } from '@/common/enums'
 export class ConfigService {
   constructor(private readonly config: AppConfigService) {}
 
-  get dbUrl(): string {
-    return this.config.get<string>(ENV.DATABASE_URL)
-  }
-
   get port(): number {
     return this.config.get<number>(ENV.APP_PORT)
   }
