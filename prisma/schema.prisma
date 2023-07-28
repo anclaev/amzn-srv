@@ -19,8 +19,9 @@ model User {
   avatar String @default("/uploads/default-av.png") @map("avatar_url")
   phone  String @default("")
 
-  orders  Order[]
-  reviews Review[]
+  orders    Order[]
+  reviews   Review[]
+  favorites Product[]
 }
 
 model Product {
@@ -39,6 +40,8 @@ model Product {
 
   category   Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?      @map("category_id")
+
+  users User[]
 }
 
 model Category {

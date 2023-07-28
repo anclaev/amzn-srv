@@ -31,7 +31,7 @@ export class AuthService {
   async register(dto: AuthRegisterDto): Promise<UserWithTokens> {
     const _dto = { ...dto, email: dto.email.trim() }
 
-    const existUser = await this.userService.getByEmail(dto.email)
+    const existUser = await this.userService.byEmail(dto.email)
 
     if (existUser) throw new BadRequestException('User already exists')
 
@@ -71,7 +71,7 @@ export class AuthService {
         throw new UnauthorizedException('Invalid refresh token')
       })
 
-    const user = await this.userService.getById(result.id)
+    const user = (await this.userService.byId(result.id)) as User
     const tokens = await this.issueTokens(user.id)
 
     return {
@@ -102,7 +102,7 @@ export class AuthService {
   }
 
   private async validateUser(dto: AuthRegisterDto): Promise<User> {
-    const user = await this.userService.getByEmail(dto.email)
+    const user = await this.userService.byEmail(dto.email)
 
     if (!user) throw new NotFoundException('User not found')
 
