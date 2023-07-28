@@ -4,7 +4,7 @@ import { ConfigService } from '@/config/config.service'
 
 import { ENV } from '@/common/enums'
 
-export const getJwtConfig = async (
+export const jwtConfig = async (
   config: ConfigService,
 ): Promise<JwtModuleOptions> => ({
   secret: config.get<string>(ENV.JWT_SECRET),

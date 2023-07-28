@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common'
 
 import { JwtService } from '@nestjs/jwt'
-import { faker } from '@faker-js/faker'
+import { fakerRU as faker } from '@faker-js/faker'
 import { User } from '@prisma/client'
 import { hash, verify } from 'argon2'
 

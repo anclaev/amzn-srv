@@ -11,7 +11,7 @@ import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
 import { JwtStrategy } from './jwt.strategy'
 
-import { getJwtConfig } from '@/common/utils'
+import { jwtConfig } from '@utils/jwt-config'
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { getJwtConfig } from '@/common/utils'
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: getJwtConfig,
+      useFactory: jwtConfig,
     }),
   ],
   controllers: [AuthController],

@@ -26,6 +26,7 @@
     "noFallthroughCasesInSwitch": false
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "seeder/**/*.ts"
   ]
 }

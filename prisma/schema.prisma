@@ -50,6 +50,7 @@ model Category {
   updatedAt DateTime @updatedAt
 
   name String @unique
+  slug String @unique
 
   products Product[]
 }
