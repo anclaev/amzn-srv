@@ -1,2 +1,2 @@
-[] Вынести логику получения пользователя за пределы AuthService (в UserService)
-[] Переименовать DTO в AuthModule
+[+] Вынести логику получения пользователя за пределы AuthService (в UserService)
+[+] Переименовать DTO в AuthModule

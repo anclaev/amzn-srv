@@ -11,6 +11,7 @@ import { User } from '@prisma/client'
 import { hash, verify } from 'argon2'
 
 import { PrismaService } from '@/prisma/prisma.service'
+import { UserService } from '@/user/user.service'
 
 import { AuthRegisterDto } from './dto/auth-register.dto'
 import { RefreshTokenDto } from './dto/refresh-token.dto'
@@ -24,16 +25,13 @@ export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
+    private readonly userService: UserService,
   ) {}
 
   async register(dto: AuthRegisterDto): Promise<UserWithTokens> {
     const _dto = { ...dto, email: dto.email.trim() }
 
-    const existUser = await this.prisma.user.findUnique({
-      where: {
-        email: _dto.email,
-      },
-    })
+    const existUser = await this.userService.getByEmail(dto.email)
 
     if (existUser) throw new BadRequestException('User already exists')
 
@@ -73,12 +71,7 @@ export class AuthService {
         throw new UnauthorizedException('Invalid refresh token')
       })
 
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: result.id,
-      },
-    })
-
+    const user = await this.userService.getById(result.id)
     const tokens = await this.issueTokens(user.id)
 
     return {
@@ -109,11 +102,7 @@ export class AuthService {
   }
 
   private async validateUser(dto: AuthRegisterDto): Promise<User> {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email: dto.email,
-      },
-    })
+    const user = await this.userService.getByEmail(dto.email)
 
     if (!user) throw new NotFoundException('User not found')
 

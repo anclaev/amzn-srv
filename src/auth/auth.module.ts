@@ -5,6 +5,7 @@ import { ConfigModule } from '@/config/config.module'
 import { ConfigService } from '@/config/config.service'
 
 import { PrismaService } from '@/prisma/prisma.service'
+import { UserService } from '@/user/user.service'
 
 import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
@@ -22,6 +23,6 @@ import { getJwtConfig } from '@/common/utils'
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, PrismaService],
+  providers: [AuthService, JwtStrategy, PrismaService, UserService],
 })
 export class AuthModule {}
