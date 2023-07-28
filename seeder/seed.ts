@@ -1,5 +1,5 @@
 import { PrismaClient, Product } from '@prisma/client'
-import { fakerRU as faker } from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 import * as dotenv from 'dotenv'
 
 dotenv.config()
@@ -13,47 +13,49 @@ const createProducts = async (quantity: number) => {
     const productName = faker.commerce.productName()
     const categoryName = faker.commerce.department()
 
-    const product = await prisma.product.create({
-      data: {
-        name: productName,
-        slug: faker.helpers.slugify(productName),
-        description: faker.commerce.productDescription(),
-        price: Number(faker.commerce.price({ min: 10, max: 999, dec: 0 })),
-        images: Array.from({
-          length: faker.number.int({ min: 2, max: 6 }),
-        }).map(() => faker.image.url()),
-        category: {
-          create: {
-            name: categoryName,
-            slug: faker.helpers.slugify(categoryName),
+    try {
+      const product = await prisma.product.create({
+        data: {
+          name: productName,
+          slug: faker.helpers.slugify(productName),
+          description: faker.commerce.productDescription(),
+          price: Number(faker.commerce.price({ min: 10, max: 999, dec: 0 })),
+          images: Array.from({
+            length: faker.number.int({ min: 2, max: 6 }),
+          }).map(() => faker.image.url()),
+          category: {
+            create: {
+              name: categoryName,
+              slug: faker.helpers.slugify(categoryName),
+            },
+          },
+          reviews: {
+            create: [
+              {
+                rating: faker.number.int({ min: 2, max: 6 }),
+                text: faker.lorem.paragraph(),
+                user: {
+                  connect: {
+                    id: 1,
+                  },
+                },
+              },
+              {
+                rating: faker.number.int({ min: 2, max: 6 }),
+                text: faker.lorem.paragraph(),
+                user: {
+                  connect: {
+                    id: 1,
+                  },
+                },
+              },
+            ],
           },
         },
-        reviews: {
-          create: [
-            {
-              rating: faker.number.int({ min: 2, max: 6 }),
-              text: faker.lorem.paragraph(),
-              user: {
-                connect: {
-                  id: 1,
-                },
-              },
-            },
-            {
-              rating: faker.number.int({ min: 2, max: 6 }),
-              text: faker.lorem.paragraph(),
-              user: {
-                connect: {
-                  id: 1,
-                },
-              },
-            },
-          ],
-        },
-      },
-    })
+      })
 
-    products.push(product)
+      products.push(product)
+    } catch (e) {}
   }
 
   console.log(`Created ${products.length} products`)
