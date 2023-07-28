@@ -90,7 +90,7 @@ export class UserService {
       data: {
         favorites: {
           [isExists ? 'disconnect' : 'connect']: {
-            id: productId,
+            id: Number(productId),
           },
         },
       },
