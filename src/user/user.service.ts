@@ -9,7 +9,7 @@ import { hash } from 'argon2'
 
 import { PrismaService } from '@/prisma/prisma.service'
 
-import { returnUserObject } from '@/user/objects/return-user-object'
+import { returnUser } from '@/user/objects/return-user'
 import { UserDto } from '@/user/dto/user.dto'
 
 import { UserWithFavorites } from '@common/types'
@@ -35,7 +35,7 @@ export class UserService {
         id,
       },
       select: {
-        ...returnUserObject,
+        ...returnUser,
         favorites: {
           select: {
             id: true,
