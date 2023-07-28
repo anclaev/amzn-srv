@@ -1,5 +1,6 @@
+import { FingerprintResult as Fingerprint } from 'express-fingerprint'
+import { Request as ExpressRequest } from 'express'
 import { ProductPayload, User } from '@prisma/client'
-import { Request } from 'express'
 
 export type Tokens = {
   accessToken: string
@@ -21,6 +22,10 @@ export type Cookie = {
   secure: boolean
   path: string
   maxAge: number
+}
+
+export interface Request extends ExpressRequest {
+  fingerprint: Fingerprint
 }
 
 export type CookieWithExpiration = Cookie & {

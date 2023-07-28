@@ -36,6 +36,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
   /**
    * Метод валидации токена обновления
    * @param {ReqUser} req Запрос
+   * @param {UserCredentials} credentials ID пользователя
    * @returns {UserCredentials} Авторизационные данные пользователя
    */
   async validate(
@@ -43,7 +44,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
     { id }: UserCredentials,
   ): Promise<UserCredentials> {
     const refreshToken = req.cookies?.Refresh
-
+    req.fingerprint
     await this.jwt
       .verifyAsync<{ id: number }>(refreshToken, {
         secret: this.config.get<string>(ENV.JWT_REFRESH_SECRET),
