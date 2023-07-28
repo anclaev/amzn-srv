@@ -4,7 +4,10 @@ import { ENVIRONMENT } from '@common/enums'
 
 export const validationSchema = Joi.object({
   DATABASE_URL: Joi.string().required(),
-  JWT_SECRET: Joi.string().required(),
+  JWT_ACCESS_SECRET: Joi.string().required(),
+  JWT_ACCESS_EXPIRATION: Joi.number().required(),
+  JWT_REFRESH_SECRET: Joi.string().required(),
+  JWT_REFRESH_EXPIRATION: Joi.number().required(),
   PORT: Joi.number().default(4200),
   COOKIE_SECRET: Joi.string().required(),
   SENTRY_DSN: Joi.string().required(),

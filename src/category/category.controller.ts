@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { Category } from '@prisma/client'
 
-import { JwtAuth } from '@decorators/jwt-auth'
+import { Auth } from '@decorators/auth'
 import { Validation } from '@decorators/validation'
 
 import { CategoryService } from './category.service'
@@ -12,34 +12,34 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
-  @JwtAuth()
+  @Auth()
   async getAllCategories(): Promise<Category[]> {
     return await this.categoryService.getAll()
   }
 
   @Get('slug/:slug')
-  @JwtAuth()
+  @Auth()
   @Validation()
   async getCategoryBySlug(@Param('slug') slug: string): Promise<Category> {
     return await this.categoryService.bySlug(slug)
   }
 
   @Get(':id')
-  @JwtAuth()
+  @Auth()
   @Validation()
   async getCategoryById(@Param('id') id: number): Promise<Category> {
     return await this.categoryService.byId(Number(id))
   }
 
   @Post()
-  @JwtAuth()
+  @Auth()
   @Validation()
   async createCategory(@Body() dto: CategoryDto): Promise<Category> {
     return await this.categoryService.create(dto)
   }
 
   @Put(':id')
-  @JwtAuth()
+  @Auth()
   @Validation()
   async updateCategory(
     @Param('id') id: number,
@@ -49,7 +49,7 @@ export class CategoryController {
   }
 
   @Delete(':id')
-  @JwtAuth()
+  @Auth()
   @Validation()
   async deleteCategory(@Param('id') id: number): Promise<Category> {
     return await this.categoryService.delete(Number(id))

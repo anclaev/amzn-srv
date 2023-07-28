@@ -12,14 +12,14 @@ import { User } from '@prisma/client'
 
 import { CurrentUser } from '@decorators/current-user'
 import { Validation } from '@decorators/validation'
-import { JwtAuth } from '@decorators/jwt-auth'
+import { Auth } from '@decorators/auth'
 
 import { UserService } from './user.service'
 import { UserDto } from './dto/user.dto'
 
 @Controller('user')
 export class UserController {
-  @JwtAuth()
+  @Auth()
   @Get('profile')
   async getProfile(@CurrentUser('id') userId: number): Promise<User> {
     return (await this.userService.byId(userId)) as User
@@ -29,7 +29,7 @@ export class UserController {
 
   @Validation()
   @HttpCode(200)
-  @JwtAuth()
+  @Auth()
   @Put('profile')
   async updateProfile(
     @CurrentUser('id') id: number,
@@ -39,7 +39,7 @@ export class UserController {
   }
 
   @HttpCode(200)
-  @JwtAuth()
+  @Auth()
   @Patch('profile/favorites/:productId')
   async toggleFavorite(
     @CurrentUser('id') userId: number,
