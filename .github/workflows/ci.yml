@@ -21,8 +21,7 @@ jobs:
         run: yarn install
   
       - name: Создание переменных окружения
-        run: |
-          echo "${{ secrets.ENV_FILE }}" > .env
+        run: echo "${{ secrets.ENV_FILE }}"
       
       - name: Сборка приложения
         run: yarn build
