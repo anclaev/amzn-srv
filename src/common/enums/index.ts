@@ -12,6 +12,7 @@ export enum ENV {
   SENTRY_DSN = 'SENTRY_DSN',
   ENVIRONMENT = 'ENVIRONMENT',
   PHONE_NUMBER_FORMAT = '+375 (##) ### ## ##',
+  MAX_USER_SESSIONS = 'MAX_USER_SESSIONS',
 }
 
 export enum ENVIRONMENT {

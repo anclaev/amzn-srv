@@ -2,12 +2,13 @@ import { PassportStrategy } from '@nestjs/passport'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { JwtService } from '@nestjs/jwt'
-import { Request } from 'express'
 
 import { ConfigService } from '@/config/config.service'
-import { UserCredentials } from '@common/types'
-import { ENV } from '@common/enums'
+import { SessionService } from '@/auth/session.service'
 import { AuthService } from '@/auth/auth.service'
+
+import { Request, UserCredentials } from '@common/types'
+import { ENV } from '@common/enums'
 
 /**
  * Стратегия валидации токена обновления
@@ -20,6 +21,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
   constructor(
     private readonly config: ConfigService,
     private readonly jwt: JwtService,
+    private readonly session: SessionService,
     private readonly auth: AuthService,
   ) {
     super({
@@ -44,16 +46,15 @@ export class JwtRefreshStrategy extends PassportStrategy(
     { id }: UserCredentials,
   ): Promise<UserCredentials> {
     const refreshToken = req.cookies?.Refresh
-    req.fingerprint
-    await this.jwt
-      .verifyAsync<{ id: number }>(refreshToken, {
-        secret: this.config.get<string>(ENV.JWT_REFRESH_SECRET),
-      })
-      .catch(() => {
-        throw new UnauthorizedException('Invalid refresh token')
-      })
+    const fingerprint = req.fingerprint
 
-    const { user } = await this.auth.login({ id, email: '' })
+    const session = await this.session.getSessionByFingerprint(fingerprint)
+
+    if (!session || session.token !== refreshToken) {
+      throw new UnauthorizedException('Invalid refresh token')
+    }
+
+    const { user } = await this.auth.login({ id, email: '' }, req.fingerprint)
 
     return user
   }

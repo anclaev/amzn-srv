@@ -7,21 +7,21 @@ import {
 
 import { JwtService } from '@nestjs/jwt'
 import { faker } from '@faker-js/faker'
-import { User } from '@prisma/client'
+import { Session, User } from '@prisma/client'
 import { hash, verify } from 'argon2'
 import moment from 'moment'
 
 import { PrismaService } from '@/prisma/prisma.service'
 import { UserService } from '@/user/user.service'
 import { ConfigService } from '@/config/config.service'
+import { SessionService } from '@/auth/session.service'
 
 import { AuthRegisterDto } from './dto/auth-register.dto'
-import { RefreshTokenDto } from './dto/refresh-token.dto'
-import { AuthLoginDto } from '@/auth/dto/auth-login.dto'
 
 import {
   Cookie,
   CookieWithExpiration,
+  Fingerprint,
   Tokens,
   UserCredentials,
   UserWithTokens,
@@ -39,12 +39,16 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
+    private readonly session: SessionService,
     private readonly userService: UserService,
   ) {
     this.env = this.config.get<string>(ENV.ENVIRONMENT)
   }
 
-  async register(dto: AuthRegisterDto): Promise<UserWithTokens> {
+  async register(
+    dto: AuthRegisterDto,
+    fingerprint: Fingerprint,
+  ): Promise<UserWithTokens> {
     const _dto = { ...dto, email: dto.email.trim() }
 
     const existUser = await this.userService.byEmail(dto.email)
@@ -63,13 +67,22 @@ export class AuthService {
 
     const tokens = await this.issueTokens(user.id)
 
+    await this.session.addSession({
+      userId: user.id,
+      token: tokens.refreshToken,
+      fingerprint,
+    })
+
     return {
       user: this.returnUserFields(user),
       ...tokens,
     }
   }
 
-  async login(credentials: UserCredentials): Promise<UserWithTokens> {
+  async login(
+    credentials: UserCredentials,
+    fingerprint: Fingerprint,
+  ): Promise<UserWithTokens> {
     const user = await this.prisma.user.findUnique({
       where: {
         id: credentials.id,
@@ -78,16 +91,24 @@ export class AuthService {
 
     const tokens = await this.issueTokens(user.id)
 
+    await this.session.addSession({
+      userId: user.id,
+      token: tokens.refreshToken,
+      fingerprint,
+    })
+
     return {
       user: this.returnUserFields(user),
       ...tokens,
     }
   }
-  async refreshTokens(user: UserCredentials): Promise<string> {
-    console.log(user)
-    const { accessToken } = await this.issueTokens(user.id)
+  async refreshTokens(user: UserCredentials): Promise<string[]> {
+    const { accessToken, refreshToken } = await this.issueTokens(user.id)
 
-    return cookieToString(this.getCookieWithAccessToken(accessToken))
+    return [
+      cookieToString(this.getCookieWithAccessToken(accessToken)),
+      cookieToString(this.getCookieWithRefreshToken(refreshToken)),
+    ]
   }
 
   private async issueTokens(userId: number): Promise<Tokens> {
@@ -177,7 +198,7 @@ export class AuthService {
       httpOnly: true,
       secure: this.env !== ENVIRONMENT.DEVELOPMENT,
       maxAge: tokenExpiration,
-      path: '/auth/refresh',
+      path: '/auth',
       expiration: moment(new Date()).add(tokenExpiration, 's').toDate(),
     }
   }
@@ -193,7 +214,11 @@ export class AuthService {
       }Path=/; Max-Age=0`,
       `Refresh=; HttpOnly; ${
         this.env !== ENVIRONMENT.DEVELOPMENT ? 'Secure; ' : ''
-      }Path=/auth/refresh; Max-Age=0`,
+      }Path=/auth; Max-Age=0`,
     ]
+  }
+
+  public async logout(refreshToken: string): Promise<Session> {
+    return await this.session.removeSession(refreshToken)
   }
 }

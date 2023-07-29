@@ -14,10 +14,9 @@ import { Response } from 'express'
 import { AuthService } from './auth.service'
 
 import { AuthRegisterDto } from './dto/auth-register.dto'
-import { RefreshTokenDto } from './dto/refresh-token.dto'
 
 import { Validation } from '@decorators/validation'
-import { ReqUser } from '@common/types'
+import { Request, ReqUser } from '@common/types'
 
 import { LocalAuthGuard } from '@/auth/guards/local-auth.guard'
 import { Auth } from '@decorators/auth'
@@ -30,9 +29,14 @@ export class AuthController {
   @Validation()
   @HttpCode(201)
   @Post('register')
-  async register(@Body() dto: AuthRegisterDto, @Res() res: Response) {
+  async register(
+    @Body() dto: AuthRegisterDto,
+    @Res() res: Response,
+    @Req() { fingerprint }: Request,
+  ) {
     const { user, refreshToken, accessToken } = await this.authService.register(
       dto,
+      fingerprint,
     )
 
     const { access, refresh } = this.authService.getCookiesWithTokens(
@@ -49,9 +53,13 @@ export class AuthController {
   @HttpCode(200)
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() { user }: ReqUser, @Res() res: Response) {
+  async login(
+    @Req() { user }: ReqUser,
+    @Res() res: Response,
+    @Req() { fingerprint }: Request,
+  ) {
     const { refreshToken, accessToken, ...credentials } =
-      await this.authService.login(user)
+      await this.authService.login(user, fingerprint)
 
     const { access, refresh } = this.authService.getCookiesWithTokens(
       accessToken,
@@ -67,6 +75,7 @@ export class AuthController {
   @Post('logout')
   async logout(@Req() req: ReqUser, @Res() res: Response) {
     const cookies = this.authService.getCookiesForLogout()
+    await this.authService.logout(req.cookies.Refresh)
 
     res.setHeader('Set-Cookie', cookies)
 

@@ -1,4 +1,4 @@
-import { FingerprintResult as Fingerprint } from 'express-fingerprint'
+import { FingerprintResult } from 'express-fingerprint'
 import { Request as ExpressRequest } from 'express'
 import { ProductPayload, User } from '@prisma/client'
 
@@ -6,6 +6,8 @@ export type Tokens = {
   accessToken: string
   refreshToken: string
 }
+
+export type Fingerprint = FingerprintResult
 
 export type UserCredentials = Pick<User, 'id'> & Pick<User, 'email'>
 

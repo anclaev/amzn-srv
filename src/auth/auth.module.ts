@@ -7,6 +7,7 @@ import { ConfigService } from '@/config/config.service'
 
 import { PrismaService } from '@/prisma/prisma.service'
 import { UserService } from '@/user/user.service'
+import { SessionService } from '@/auth/session.service'
 
 import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
@@ -36,6 +37,7 @@ import { jwtConfig } from '@utils/jwt-config'
     PrismaService,
     UserService,
     ConfigService,
+    SessionService,
   ],
 })
 export class AuthModule {}
