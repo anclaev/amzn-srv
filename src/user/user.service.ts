@@ -30,7 +30,7 @@ export class UserService {
     id: number,
     selectObject: Prisma.UserSelect = {},
   ): Promise<User> {
-    return this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         id,
       },
@@ -47,7 +47,11 @@ export class UserService {
         },
         ...selectObject,
       },
-    }) as Promise<User>
+    })
+
+    if (!user) throw new NotFoundException('User not found')
+
+    return user as User
   }
 
   public async updateProfile(id: number, dto: UserDto): Promise<User> {

@@ -8,7 +8,7 @@ import { Auth } from '@decorators/auth'
 import { ReviewService } from './review.service'
 import { ReviewDto } from './dto/review.dto'
 
-@Controller('review')
+@Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 

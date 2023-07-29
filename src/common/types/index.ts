@@ -39,3 +39,10 @@ export type CookieWithExpiration = Cookie & {
 export type ReqUser = Request & {
   user: UserCredentials
 }
+
+export interface ConsumerStatistic {
+  orders: number
+  reviews: number
+  favorites: number
+  totalAmount: number
+}
