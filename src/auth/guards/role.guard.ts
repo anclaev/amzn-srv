@@ -8,7 +8,7 @@ export const RoleGuard = (roles?: ROLE[]): Type<CanActivate> => {
     canActivate(context: ExecutionContext) {
       const request = context.switchToHttp().getRequest<ReqUser>()
       const user = request.user
-      console.log(user.role, roles)
+
       if (roles) return roles.includes(user.role as ROLE)
 
       return true
