@@ -54,7 +54,10 @@ export class JwtRefreshStrategy extends PassportStrategy(
       throw new UnauthorizedException('Invalid refresh token')
     }
 
-    const { user } = await this.auth.login({ id, email: '' }, req.fingerprint)
+    const { user } = await this.auth.login(
+      { id, email: '', role: 'CONSUMER' },
+      req.fingerprint,
+    )
 
     return user
   }

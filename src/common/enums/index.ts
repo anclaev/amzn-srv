@@ -20,3 +20,9 @@ export enum ENVIRONMENT {
   STAGING = 'staging',
   PRODUCTION = 'production',
 }
+
+export enum ROLE {
+  ADMIN = 'ADMIN',
+  MANAGER = 'MANAGER',
+  CONSUMER = 'CONSUMER',
+}

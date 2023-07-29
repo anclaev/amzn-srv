@@ -9,7 +9,9 @@ export type Tokens = {
 
 export type Fingerprint = FingerprintResult
 
-export type UserCredentials = Pick<User, 'id'> & Pick<User, 'email'>
+export type UserCredentials = Pick<User, 'id'> &
+  Pick<User, 'email'> &
+  Pick<User, 'role'>
 
 export type UserWithTokens = { user: UserCredentials } & Tokens
 
