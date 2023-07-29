@@ -13,7 +13,7 @@ import { Response } from 'express'
 
 import { AuthService } from './auth.service'
 
-import { AuthRegisterDto } from './dto/auth-register.dto'
+import { AuthDto } from './auth.dto'
 
 import { Validation } from '@decorators/validation'
 import { Request, ReqUser } from '@common/types'
@@ -30,7 +30,7 @@ export class AuthController {
   @HttpCode(201)
   @Post('register')
   async register(
-    @Body() dto: AuthRegisterDto,
+    @Body() dto: AuthDto,
     @Res() res: Response,
     @Req() { fingerprint }: Request,
   ) {

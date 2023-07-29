@@ -16,7 +16,7 @@ import { UserService } from '@/user/user.service'
 import { ConfigService } from '@/config/config.service'
 import { SessionService } from '@/auth/session.service'
 
-import { AuthRegisterDto } from './dto/auth-register.dto'
+import { AuthDto } from './auth.dto'
 
 import {
   Cookie,
@@ -46,7 +46,7 @@ export class AuthService {
   }
 
   async register(
-    dto: AuthRegisterDto,
+    dto: AuthDto,
     fingerprint: Fingerprint,
   ): Promise<UserWithTokens> {
     const _dto = { ...dto, email: dto.email.trim() }
@@ -142,7 +142,7 @@ export class AuthService {
     }
   }
 
-  public async validateUser(dto: AuthRegisterDto): Promise<User> {
+  public async validateUser(dto: AuthDto): Promise<User> {
     const user = await this.userService.byEmail(dto.email)
 
     if (!user) throw new NotFoundException('User not found')

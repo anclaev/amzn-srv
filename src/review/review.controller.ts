@@ -6,7 +6,7 @@ import { Validation } from '@decorators/validation'
 import { Auth } from '@decorators/auth'
 
 import { ReviewService } from './review.service'
-import { ReviewDto } from './dto/review.dto'
+import { ReviewDto } from './review.dto'
 
 @Controller('reviews')
 export class ReviewController {

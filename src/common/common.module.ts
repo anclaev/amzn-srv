@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
 
-import { PrismaService } from '@/prisma/prisma.service'
+import { PaginationService } from './pagination.service'
 
 @Module({
-  providers: [PrismaService],
-  exports: [PrismaService],
+  providers: [PaginationService],
+  exports: [PaginationService],
 })
 export class CommonModule {}

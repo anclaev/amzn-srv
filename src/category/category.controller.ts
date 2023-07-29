@@ -5,7 +5,7 @@ import { Auth } from '@decorators/auth'
 import { Validation } from '@decorators/validation'
 
 import { CategoryService } from './category.service'
-import { CategoryDto } from './dto/category.dto'
+import { CategoryDto } from './category.dto'
 
 @Controller('categories')
 export class CategoryController {

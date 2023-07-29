@@ -8,8 +8,8 @@ import { Category } from '@prisma/client'
 
 import { PrismaService } from '@/prisma/prisma.service'
 
-import { returnCategoryObject } from './objects/return-category'
-import { CategoryDto } from './dto/category.dto'
+import { returnCategory } from './objects/return-category'
+import { CategoryDto } from './category.dto'
 
 @Injectable()
 export class CategoryService {
@@ -20,7 +20,7 @@ export class CategoryService {
       where: {
         id,
       },
-      select: returnCategoryObject,
+      select: returnCategory,
     })
 
     if (!category) throw new NotFoundException('Category not found')
@@ -42,7 +42,7 @@ export class CategoryService {
 
   public async getAll(): Promise<Category[]> {
     return (await this.prisma.category.findMany({
-      select: returnCategoryObject,
+      select: returnCategory,
     })) as Category[]
   }
 

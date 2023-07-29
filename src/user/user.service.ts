@@ -10,7 +10,7 @@ import { hash } from 'argon2'
 import { PrismaService } from '@/prisma/prisma.service'
 
 import { returnUser } from '@/user/objects/return-user'
-import { UserDto } from '@/user/dto/user.dto'
+import { UserDto } from '@/user/user.dto'
 
 import { UserWithFavorites } from '@common/types'
 

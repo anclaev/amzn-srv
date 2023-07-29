@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common'
+import { IsOptional, IsString } from 'class-validator'
 
-import { PaginationDto } from '@/pagination/pagination.dto'
+import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class PaginationService {
@@ -12,4 +12,14 @@ export class PaginationService {
 
     return { perPage, skip }
   }
+}
+
+export class PaginationDto {
+  @IsOptional()
+  @IsString()
+  page?: string
+
+  @IsOptional()
+  @IsString()
+  perPage?: string
 }

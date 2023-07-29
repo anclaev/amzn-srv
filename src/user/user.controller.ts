@@ -15,7 +15,7 @@ import { Validation } from '@decorators/validation'
 import { Auth } from '@decorators/auth'
 
 import { UserService } from './user.service'
-import { UserDto } from './dto/user.dto'
+import { UserDto } from './user.dto'
 
 @Controller('user')
 export class UserController {

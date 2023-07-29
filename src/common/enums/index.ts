@@ -26,3 +26,10 @@ export enum ROLE {
   MANAGER = 'MANAGER',
   CONSUMER = 'CONSUMER',
 }
+
+export enum PRODUCT_SORT {
+  HIGH_PRICE = 'high-price',
+  LOW_PRICE = 'low-price',
+  NEWEST = 'newest',
+  OLDEST = 'oldest',
+}

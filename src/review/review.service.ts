@@ -11,7 +11,7 @@ import { PrismaService } from '@/prisma/prisma.service'
 import { ROLE } from '@common/enums'
 
 import { returnReview } from './objects/return-review'
-import { ReviewDto } from './dto/review.dto'
+import { ReviewDto } from './review.dto'
 
 @Injectable()
 export class ReviewService {
