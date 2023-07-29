@@ -21,6 +21,7 @@ import { MetricsModule } from './metrics/metrics.module'
     ConfigModule,
     SentryModule,
     CommonModule,
+    PaginationModule,
     PrismaModule,
     UserModule,
     AuthModule,
@@ -28,9 +29,7 @@ import { MetricsModule } from './metrics/metrics.module'
     ReviewModule,
     CategoryModule,
     OrderModule,
-    PaginationModule,
     MetricsModule,
-    SentryModule,
   ],
   providers: [
     {

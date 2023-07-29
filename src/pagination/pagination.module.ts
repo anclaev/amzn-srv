@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { PaginationService } from './pagination.service';
-import { PaginationController } from './pagination.controller';
+import { Module } from '@nestjs/common'
+
+import { PaginationService } from './pagination.service'
 
 @Module({
-  controllers: [PaginationController],
-  providers: [PaginationService]
+  providers: [PaginationService],
+  exports: [PaginationModule],
 })
 export class PaginationModule {}
