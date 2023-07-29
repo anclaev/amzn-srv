@@ -45,6 +45,6 @@ export class UserController {
     @CurrentUser('id') userId: number,
     @Param('productId') productId: number,
   ) {
-    return await this.userService.toggleFavorite(userId, productId)
+    return await this.userService.toggleFavorite(userId, Number(productId))
   }
 }

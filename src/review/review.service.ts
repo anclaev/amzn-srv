@@ -7,6 +7,7 @@ import {
 import { Review, User } from '@prisma/client'
 
 import { PrismaService } from '@/prisma/prisma.service'
+import { ProductService } from '@/product/product.service'
 
 import { ROLE } from '@common/enums'
 
@@ -15,7 +16,10 @@ import { ReviewDto } from './review.dto'
 
 @Injectable()
 export class ReviewService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly productService: ProductService,
+  ) {}
 
   public async byId(id: number): Promise<Review> {
     const review = await this.prisma.review.findUnique({
@@ -57,12 +61,16 @@ export class ReviewService {
     productId: number,
     dto: ReviewDto,
   ): Promise<Review> {
+    const product = await this.productService.byId(productId)
+
+    if (!product) return null
+
     return this.prisma.review.create({
       data: {
         ...dto,
         product: {
           connect: {
-            id: productId,
+            id: product.id,
           },
         },
         user: {

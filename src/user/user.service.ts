@@ -8,6 +8,7 @@ import { Prisma, User } from '@prisma/client'
 import { hash } from 'argon2'
 
 import { PrismaService } from '@/prisma/prisma.service'
+import { ProductService } from '@/product/product.service'
 
 import { returnUser } from '@/user/objects/return-user'
 import { UserDto } from '@/user/user.dto'
@@ -16,7 +17,10 @@ import { UserWithFavorites } from '@common/types'
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly productService: ProductService,
+  ) {}
 
   public async byEmail(email: string): Promise<User> {
     return this.prisma.user.findUnique({
@@ -83,9 +87,14 @@ export class UserService {
   public async toggleFavorite(id: number, productId: number): Promise<boolean> {
     const user = (await this.byId(id)) as UserWithFavorites
 
-    if (!user) throw new NotFoundException('User not found')
+    const product = await this.productService.byId(productId)
 
-    const isExists = user.favorites.some((product) => product, id === productId)
+    if (!product) return null
+
+    const isExists = user.favorites.some(
+      (product) => product,
+      id === product.id,
+    )
 
     await this.prisma.user.update({
       where: {
@@ -94,7 +103,7 @@ export class UserService {
       data: {
         favorites: {
           [isExists ? 'disconnect' : 'connect']: {
-            id: Number(productId),
+            id: product.id,
           },
         },
       },
