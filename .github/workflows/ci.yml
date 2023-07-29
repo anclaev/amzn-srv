@@ -22,7 +22,7 @@ jobs:
   
       - name: Создание переменных окружения
         run: |
-          echo "${{ secrets.ENV_DEV }}" > .env
+          echo "${{ secrets.ENV_FILE }}" > .env
       
       - name: Сборка приложения
         run: yarn build
