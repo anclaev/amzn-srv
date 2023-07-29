@@ -18,7 +18,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed": "ts-node seeder/seed.ts"
+    "seed": "ts-node seeder/seed.ts",
+    "docs:build": "compodoc -p tsconfig.json --hideGenerator",
+    "docs:serve": "compodoc -s"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
@@ -45,6 +47,7 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.21",
     "@faker-js/faker": "^8.0.2",
     "@nestjs/cli": "^10.1.10",
     "@nestjs/schematics": "^10.0.0",
