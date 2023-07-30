@@ -21,12 +21,6 @@ export enum ENVIRONMENT {
   PRODUCTION = 'production',
 }
 
-export enum ROLE {
-  ADMIN = 'ADMIN',
-  MANAGER = 'MANAGER',
-  CONSUMER = 'CONSUMER',
-}
-
 export enum PRODUCT_SORT {
   HIGH_PRICE = 'high-price',
   LOW_PRICE = 'low-price',

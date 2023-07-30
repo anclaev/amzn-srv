@@ -4,12 +4,10 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 
-import { Review, User } from '@prisma/client'
+import { EnumUserRole, Review, User } from '@prisma/client'
 
 import { PrismaService } from '@/prisma/prisma.service'
 import { ProductService } from '@/product/product.service'
-
-import { ROLE } from '@common/enums'
 
 import { returnReview } from './objects/return-review'
 import { ReviewDto } from './review.dto'
@@ -114,7 +112,7 @@ export class ReviewService {
   private async checkAccess(reviewId: number, user: User): Promise<boolean> {
     const review = await this.byId(reviewId)
 
-    if (review['user'].id !== user.id && user.role === ROLE.CONSUMER) {
+    if (review['user'].id !== user.id && user.role === EnumUserRole.CONSUMER) {
       throw new ForbiddenException()
     }
 

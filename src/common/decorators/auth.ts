@@ -1,11 +1,10 @@
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common'
+import { EnumUserRole } from '@prisma/client'
 
 import JwtAuthGuard from '@/auth/guards/jwt-auth.guard'
 import { RoleGuard } from '@/auth/guards/role.guard'
 
-import { ROLE } from '@common/enums'
-
-export const Auth = (roles?: ROLE[]) =>
+export const Auth = (roles?: EnumUserRole[]) =>
   applyDecorators(
     SetMetadata('roles', roles),
     UseGuards(JwtAuthGuard),

@@ -1,15 +1,15 @@
 import { CanActivate, ExecutionContext, mixin, Type } from '@nestjs/common'
+import { EnumUserRole } from '@prisma/client'
 
 import { ReqUser } from '@common/types'
-import { ROLE } from '@common/enums'
 
-export const RoleGuard = (roles?: ROLE[]): Type<CanActivate> => {
+export const RoleGuard = (roles?: EnumUserRole[]): Type<CanActivate> => {
   class RoleGuardMixin implements CanActivate {
     canActivate(context: ExecutionContext) {
       const request = context.switchToHttp().getRequest<ReqUser>()
       const user = request.user
 
-      if (roles) return roles.includes(user.role as ROLE)
+      if (roles) return roles.includes(user.role as EnumUserRole)
 
       return true
     }
