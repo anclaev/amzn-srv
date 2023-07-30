@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
+import { User } from '@prisma/client'
 
 import { CurrentUser } from '@decorators/current-user'
 import { Validation } from '@decorators/validation'
@@ -23,5 +24,12 @@ export class OrderController {
   @Post()
   async placeOrder(@Body() dto: OrderDto, @CurrentUser('id') userId: number) {
     return await this.orderService.placeOrder(dto, Number(userId))
+  }
+
+  @Validation()
+  @Auth()
+  @Delete(':id')
+  async deleteOrder(@Param('id') id: number, @CurrentUser() user: User) {
+    return await this.orderService.delete(Number(id), user)
   }
 }
