@@ -149,7 +149,7 @@ export class ProductService {
 
     const category = await this.categoryService.byId(dto.categoryId)
 
-    if (!category) return false
+    if (!category) throw new BadRequestException('Category not found')
 
     const { name, description, price, images } = dto
 
