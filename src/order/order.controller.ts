@@ -1,3 +1,4 @@
+import { ApiTags, ApiOperation, ApiBody, ApiQuery } from '@nestjs/swagger'
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
 import { User } from '@prisma/client'
 
@@ -8,10 +9,20 @@ import { Auth } from '@decorators/auth'
 import { OrderService } from './order.service'
 import { OrderDto } from '@/order/order.dto'
 
+@ApiTags('Заказы')
 @Controller('orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  @ApiOperation({
+    summary: 'Получение всех заказов пользователя',
+  })
+  @ApiQuery({
+    name: 'userId',
+    description: 'ID пользователя',
+    type: 'number',
+    required: true,
+  })
   @Validation()
   @Auth()
   @Get()
@@ -19,6 +30,12 @@ export class OrderController {
     return this.orderService.getAll(Number(userId))
   }
 
+  @ApiOperation({
+    summary: 'Создание заказа',
+  })
+  @ApiBody({
+    type: OrderDto,
+  })
   @Validation()
   @Auth()
   @Post()
@@ -26,6 +43,14 @@ export class OrderController {
     return await this.orderService.placeOrder(dto, Number(userId))
   }
 
+  @ApiOperation({
+    summary: 'Удаление заказа',
+  })
+  @ApiQuery({
+    name: 'id',
+    description: 'ID заказа',
+    type: 'number',
+  })
   @Validation()
   @Auth()
   @Delete(':id')

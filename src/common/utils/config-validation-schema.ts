@@ -14,6 +14,8 @@ export const validationSchema = Joi.object({
   APP_NAME: Joi.string().default('Nest'),
   APP_HOST: Joi.string().default('localhost'),
   APP_PREFIX: Joi.string().default(null),
+  APP_VERSION: Joi.string().default('1.0'),
+  API_PATH: Joi.string().default('api'),
   MAX_USER_SESSIONS: Joi.number().default(3),
   ENVIRONMENT: Joi.string()
     .valid(ENVIRONMENT.DEVELOPMENT, ENVIRONMENT.STAGING, ENVIRONMENT.PRODUCTION)

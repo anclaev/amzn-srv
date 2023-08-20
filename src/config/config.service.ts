@@ -15,6 +15,10 @@ export class ConfigService {
     return this.config.get<string>(ENV.APP_NAME)
   }
 
+  get app_version(): string {
+    return this.config.get<string>(ENV.APP_VERSION)
+  }
+
   get<T>(name: string): T {
     return this.config.get<T>(name)
   }

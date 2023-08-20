@@ -1,4 +1,5 @@
 import { IsOptional, IsString } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
 
 import { Injectable } from '@nestjs/common'
 
@@ -15,10 +16,18 @@ export class PaginationService {
 }
 
 export class PaginationDto {
+  @ApiProperty({
+    name: 'page',
+    description: 'Текущая страница',
+  })
   @IsOptional()
   @IsString()
   page?: string
 
+  @ApiProperty({
+    name: 'perPage',
+    description: 'Количество элементов на странице',
+  })
   @IsOptional()
   @IsString()
   perPage?: string

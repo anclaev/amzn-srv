@@ -9,23 +9,32 @@ import {
   UseGuards,
 } from '@nestjs/common'
 
+import { ApiOperation, ApiTags, ApiBody } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { AuthService } from './auth.service'
-
 import { AuthDto } from './auth.dto'
 
 import { Validation } from '@decorators/validation'
+import { Auth } from '@decorators/auth'
+
 import { Request, ReqUser } from '@common/types'
 
-import { LocalAuthGuard } from '@/auth/guards/local-auth.guard'
-import { Auth } from '@decorators/auth'
 import { JwtRefreshGuard } from '@/auth/guards/jwt-refresh.guard'
+import { LocalAuthGuard } from '@/auth/guards/local-auth.guard'
 
+@ApiTags('Авторизация')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({
+    summary: 'Регистрация пользователя',
+  })
+  @ApiBody({
+    type: AuthDto,
+    description: 'Данные для авторизации',
+  })
   @Validation()
   @HttpCode(201)
   @Post('register')
@@ -49,6 +58,13 @@ export class AuthController {
     return res.send(user)
   }
 
+  @ApiOperation({
+    summary: 'Авторизация пользователя',
+  })
+  @ApiBody({
+    type: AuthDto,
+    description: 'Данные для авторизации',
+  })
   @Validation()
   @HttpCode(200)
   @UseGuards(LocalAuthGuard)
@@ -71,6 +87,9 @@ export class AuthController {
     res.send(credentials.user)
   }
 
+  @ApiOperation({
+    summary: 'Выход из системы',
+  })
   @Auth()
   @Post('logout')
   async logout(@Req() req: ReqUser, @Res() res: Response) {
@@ -82,6 +101,9 @@ export class AuthController {
     return res.sendStatus(200)
   }
 
+  @ApiOperation({
+    summary: 'Обновление токена пользователя',
+  })
   /**
    * Получение нового токена авторизации от токена обновления
    * @param {ReqUser} req Объект запроса с пользователем
