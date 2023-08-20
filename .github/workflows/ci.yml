@@ -2,9 +2,9 @@ name: Amzn CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   build:
@@ -16,13 +16,15 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 18.x
-          
+
       - name: Установка пакетов
         run: yarn install
-  
+
       - name: Создание переменных окружения
         run: echo "${{ secrets.ENV_FILE }}" >> .env
-      
+
+      - name: Создание схемы базы данных
+        run: prisma generate
+
       - name: Сборка приложения
         run: yarn build
-
