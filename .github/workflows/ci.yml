@@ -24,7 +24,7 @@ jobs:
         run: echo "${{ secrets.ENV_FILE }}" >> .env
 
       - name: Создание схемы базы данных
-        run: prisma generate
+        run: npx prisma generate
 
       - name: Сборка приложения
         run: yarn build
